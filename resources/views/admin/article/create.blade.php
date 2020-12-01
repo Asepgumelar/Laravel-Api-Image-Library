@@ -22,7 +22,7 @@
                     <textarea class="form-control" name="Description" id="" rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-success">Submit</button>
-                <a href="{{ route('image.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('article.index') }}" class="btn btn-secondary">Back</a>
             </form>
         </div>
     </div>

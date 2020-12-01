@@ -10,8 +10,8 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $data = Article::paginate(10);
-        return view('admin.article.index');
+        $data = Article::orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.article.index', compact('data'));
     }
 
     public function create()

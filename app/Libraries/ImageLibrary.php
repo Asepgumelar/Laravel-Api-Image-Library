@@ -4,6 +4,7 @@ namespace App\Libraries;
 
 use App\Models\Image;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as ImgResize;
 
@@ -38,6 +39,8 @@ class ImageLibrary
         $data->image_url     = $url;
         $data->data_type     = 'original';
         $data->save();
+
+        return $data->id;
     }
 
     public function delete($driver, Image $model)
