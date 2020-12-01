@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <a href="{{ route('image.create') }}" class="btn btn-primary">Create</a>
+                <a href="{{ route('article.create') }}" class="btn btn-primary">Create</a>
                 <table class="table table-striped table-inverse mt-3">
                     <thead class="thead-inverse">
                         <tr>

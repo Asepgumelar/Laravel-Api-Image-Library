@@ -15,6 +15,11 @@ use Unirest\Request\Body;
 
 class ImageController extends Controller
 {
+    public function __construct()
+    {
+        $this->client   = new Client();
+        $this->base_url = env('APP_URL');
+    }
 
     public function index()
     {
@@ -41,16 +46,16 @@ class ImageController extends Controller
         if($request->hasFile('ImageFile')) {
             $file = $request->file('ImageFile');
         }
+        $endpoint = '/api/v1/image/store';
+        $baseUrl = $this->base_url . $endpoint;
 
-        $url = env('APP_URL').'/api/v1/image/store';
         $output[]    = [
             'name'     => 'ImageFile',
             'contents' => fopen($file->getPathname(), 'r' ),
             'filename' => $file->getClientOriginalName()
         ];
 
-        $client   = new Client();
-        $response = $client->request( 'POST', $url, [
+        $response = $this->client->request( 'POST', $baseUrl, [
             'headers'   => [
                 'Accept' => 'application/json'
             ],

@@ -22,3 +22,7 @@ Route::group(['prefix' => 'v1/image', 'as' => 'api::image.', 'namespace' => 'Api
     Route::get('/', 'ImageController@index')->name('index');
     Route::post('/store', 'ImageController@store')->name('store');
 });
+
+Route::group(['prefix' => 'v1/article', 'as' => 'api::article.', 'namespace' => 'Api\V1'], function () {
+    Route::post('/store', 'ArticleController@store')->name('store');
+});

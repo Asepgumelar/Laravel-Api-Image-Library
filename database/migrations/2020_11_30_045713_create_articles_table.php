@@ -17,7 +17,7 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->text('desctiription');
+            $table->text('description');
             $table->timestamps();
         });
     }
