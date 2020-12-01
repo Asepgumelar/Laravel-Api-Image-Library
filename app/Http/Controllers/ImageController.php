@@ -37,27 +37,37 @@ class ImageController extends Controller
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
-        $file = $request->file('ImageFile');
-        $file         = $file;
-        $originalName = $file->getClientOriginalName();
-        $name         = uniqid() . '_' . trim($originalName);
-        $params = [
-            'ImageFile' => $file,
+
+        if($request->hasFile('ImageFile')) {
+            $file = $request->file('ImageFile');
+        }
+
+        $url = env('APP_URL').'/api/v1/image/store';
+        $output[]    = [
+            'name'     => 'ImageFile',
+            'contents' => fopen($file->getPathname(), 'r' ),
+            'filename' => $file->getClientOriginalName()
         ];
-        $headers = [
-            'Authorization' => env("KP_TOKEN_AUTH"),
-            'Accept' => 'application/json'
-        ];
 
-        $body = Body::Form($params);
+        $client   = new Client();
+        $response = $client->request( 'POST', $url, [
+            'headers'   => [
+                'Accept' => 'application/json'
+            ],
+            'multipart' => $output
+        ]);
 
-        $response = \Unirest\Request::post(env('APP_URL').'api/v1/image/store', $headers, $body);
+        if ($response->getStatusCode() == 201) {
+            return redirect()->route('image.index')->with('message', 'Image has been uploaded');
+        }
+        return redirect()->route('image.index')->with('errors', 'Image error');
 
-        return $response;
     }
 
     public function storeMultiple(Request $request)
     {
+        //
+
         return redirect()->route('image.index');
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Libraries\ImageLibrary;
 use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ImageController extends Controller
@@ -20,7 +21,7 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'ImageFile' => 'required|image:jpeg,png,jpg,gif,svg|max:2048'
+            'ImageFile' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -35,9 +36,12 @@ class ImageController extends Controller
                 ]
             ], 422);
         }
+        if ($request->hasFile('ImageFile')) {
+            $imgUrl = $request->file('ImageFile');
+        }
 
         $data = new ImageLibrary();
-        $data->save($request->file('ImageFile'));
+        $data->save($imgUrl);
 
         return response()->json([
             'meta' => [
@@ -48,6 +52,6 @@ class ImageController extends Controller
                 'error' => [],
                 'data' => $data
             ]
-            ], 201);
+        ], 201);
     }
 }

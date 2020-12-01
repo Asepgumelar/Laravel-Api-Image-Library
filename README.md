@@ -14,4 +14,4 @@
 - copy .env.example .env
 - php artisan migrate
 - php artisan db:seed
-- setup youe vhost
+- setup your vhost
