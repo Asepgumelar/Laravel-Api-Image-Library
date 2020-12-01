@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Libraries\ImageLibrary;
 use App\Models\Image;
+use CURLFile;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
+use Unirest\Request\Body;
 
 class ImageController extends Controller
 {
@@ -34,11 +37,23 @@ class ImageController extends Controller
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
+        $file = $request->file('ImageFile');
+        $file         = $file;
+        $originalName = $file->getClientOriginalName();
+        $name         = uniqid() . '_' . trim($originalName);
+        $params = [
+            'ImageFile' => $file,
+        ];
+        $headers = [
+            'Authorization' => env("KP_TOKEN_AUTH"),
+            'Accept' => 'application/json'
+        ];
 
-        $data = new ImageLibrary();
-        $data->save($request->file('ImageFile'));
+        $body = Body::Form($params);
 
-        return redirect()->route('image.index')->with('message', 'Image has been save');
+        $response = \Unirest\Request::post(env('APP_URL').'api/v1/image/store', $headers, $body);
+
+        return $response;
     }
 
     public function storeMultiple(Request $request)

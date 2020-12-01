@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1/image', 'as' => 'api::image.', 'namespace' => 'Api\V1'], function () {
     Route::get('/', 'ImageController@index')->name('index');
+    Route::post('/store', 'ImageController@store')->name('store');
 });
